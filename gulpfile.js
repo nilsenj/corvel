@@ -10,7 +10,7 @@ let bs = browserSync.create();
 let cleanDest = require('gulp-clean-dest');
 let file = require('gulp-file');
 let del = require('del');
-let task = require('gulp-task')
+let task = require('gulp-task');
 
 // NOTE: Ensure 'Linter.createProgram' is called inside the gulp task else the contents of the files will be cached
 // if this tasks is called again (eg. as part of a 'watch' task).
@@ -71,7 +71,7 @@ gulp.task('nodemon', function (cb) {
             cb();
             started = true;
         }
-        bs.reload({ stream: true });
+        bs.reload();
 
     }).on('crash', function () {
             console.log('nodemon.crash');

@@ -1,6 +1,7 @@
 import * as express from "express";
 import { imainRouter } from "../Interfaces/imainRouter";
 import { UsersRouter } from "./Users";
+import {IndexRouter} from "./Index";
 const router = express.Router();
 
 
@@ -25,6 +26,7 @@ export class mainRouter implements imainRouter {
             });
         });
 
+        IndexRouter.run(this.router);
         UsersRouter.run(this.router);
     }
 }

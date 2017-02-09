@@ -13,12 +13,12 @@ export class IndexRouter extends BaseRouter {
         super();
     }
 
-    public static create(router: Router) {
+    public static run(router: Router) {
         //log
         console.log("[IndexRoute::create] Creating index route.");
 
         //add home page route
-        router.get("/", (req: Request, res: Response, next: NextFunction) => {
+        router.get("/home", (req: Request, res: Response, next: NextFunction) => {
             new IndexRouter().index(req, res, next);
         });
     }
@@ -30,11 +30,11 @@ export class IndexRouter extends BaseRouter {
      */
     public index(req: Request, res: Response, next: NextFunction) {
         //set custom title
-        this.title = "Home | Tour of Heros";
+        this.title = "Home";
 
         //set options
         let options: Object = {
-            "message": "Welcome to the Tour of Heros"
+            "message": "home page"
         };
 
         //render template
