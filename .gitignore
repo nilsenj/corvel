@@ -5,7 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-dist/
+/dist/
 .idea
 .gulp-cache
 
@@ -60,3 +60,4 @@ typings/
 
 # dotenv environment variables file
 .env
+/dist/

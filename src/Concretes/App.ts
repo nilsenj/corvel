@@ -5,7 +5,6 @@ import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import  * as favicon from "express-favicon";
 import * as methodOverride from "method-override";
-import HeroRouter from "../routes/HeroRouter";
 import { IApp } from "../Interfaces/IApp";
 import { viewEngineConfig } from "../configs/view-engine";
 import { mainRouter } from "../routes/main";

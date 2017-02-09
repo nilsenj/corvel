@@ -1,7 +1,8 @@
 import * as express from "express";
-import {HeroRouter} from "./HeroRouter";
-import {imainRouter} from "../Interfaces/imainRouter";
+import { imainRouter } from "../Interfaces/imainRouter";
+import { UsersRouter } from "./Users";
 const router = express.Router();
+
 
 export class mainRouter implements imainRouter {
     protected router;
@@ -15,13 +16,15 @@ export class mainRouter implements imainRouter {
      */
     run(express) {
 
+        express.use("/", this.router);
+
         // placeholder route handler
         this.router.get("/", (req, res, next) => {
             res.json({
-                message: "Hello Bitch!"
+                message: "Welcome to Corvel!"
             });
         });
-        express.use("/", this.router);
-        express.use("/api/v1/heroes", HeroRouter);
+
+        UsersRouter.run(this.router);
     }
 }

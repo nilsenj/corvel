@@ -8,19 +8,30 @@ const tsProject = ts.createProject('tsconfig.json');
 let nodemon = require('gulp-nodemon');
 let bs = browserSync.create();
 let cleanDest = require('gulp-clean-dest');
+let file = require('gulp-file');
+let del = require('del');
+let task = require('gulp-task')
 
 // NOTE: Ensure 'Linter.createProgram' is called inside the gulp task else the contents of the files will be cached
 // if this tasks is called again (eg. as part of a 'watch' task).
 gulp.task('tslint', function () {
     let program = tslint.Linter.createProgram("./tsconfig.json");
-
     gulp.src('src/**/*.ts', {base: '.'})
         .pipe(gulpTslint({program}));
 });
 
+gulp.task('clean', function() {
+    return del(["dist/**/*.js"]);
+});
+
 gulp.task('scriptTask', function () {
-    const tsResult = tsProject.src()
-        .pipe(cleanDest('dist'))
+    let fs = require('fs');
+    let extraFile = "dist/index.js";
+    if (!fs.existsSync(extraFile)) {
+        gulp.src('dist/**/*.js').pipe(file(extraFile, ""));
+    }
+
+    const tsResult = gulp.src("src/**/*.ts")
         .pipe(tsProject());
     return tsResult.js.pipe(gulp.dest('dist')).pipe(browserSync.stream());
 });
@@ -45,13 +56,13 @@ gulp.task('reload', function () {
 gulp.task('nodemon', function (cb) {
     let started = false;
     const stream = nodemon({
-        script: './dist',
+        script: 'dist',
         ext: 'js',
         ignore: ['public/**/*.*'],
         tasks: [],
         env: {
             'NODE_ENV': 'development',
-            'DEBUG': 'itway.blog:*'
+            'DEBUG': 'corvel:*'
         }
     });
     stream.on('start', function () {
@@ -77,7 +88,10 @@ gulp.task('nodemon', function (cb) {
 });
 
 // the real stuff
-gulp.task('default', ['scriptTask', 'browser-sync'], function () {
-    gulp.watch('./src/**/*.ts', ['scriptTask']);
+gulp.task('default', ['clean', 'browser-sync', 'scriptTask'], function () {
+    let watcher = gulp.watch(['src/**/*.ts', 'src/*.ts', 'src/'], ['clean', 'scriptTask']);
+    watcher.on('change', function() {
+        bs.reload();
+    });
     gulp.watch('./dist/**/*.js').on('change', () => bs.reload());
 });

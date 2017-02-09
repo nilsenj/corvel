@@ -8,7 +8,6 @@
     "types": ["reflect-metadata"],
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "experimentalDecorator": true,
     "emitDecoratorMetadata": true
   },
   "include": [

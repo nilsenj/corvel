@@ -1,29 +1,43 @@
 import { Router, Request, Response, NextFunction } from "express";
+import { BaseRouter } from "../Base/BaseRouter";
 
-export class IndexRouter {
-    router: Router;
+export class IndexRouter extends BaseRouter {
+
     /**
-     * Initialize the HeroRouter
+     * Constructor
+     *
+     * @class IndexRoute
+     * @constructor
      */
     constructor() {
-        this.router = Router();
-        this.init();
+        super();
     }
-    index(req: Request, res: Response, next: NextFunction) {
-        res.render('index', { title: 'Express' });
+
+    public static create(router: Router) {
+        //log
+        console.log("[IndexRoute::create] Creating index route.");
+
+        //add home page route
+        router.get("/", (req: Request, res: Response, next: NextFunction) => {
+            new IndexRouter().index(req, res, next);
+        });
     }
+
     /**
-     * Take each handler, and attach to one of the Express.Router's
-     * endpoints.
+     * @param req
+     * @param res
+     * @param next
      */
-    init() {
-        this.router.get("/", this.index);
+    public index(req: Request, res: Response, next: NextFunction) {
+        //set custom title
+        this.title = "Home | Tour of Heros";
+
+        //set options
+        let options: Object = {
+            "message": "Welcome to the Tour of Heros"
+        };
+
+        //render template
+        this.render(req, res, "index", options);
     }
-
 }
-
-// Create the HeroRouter, and export its configured Express.Router
-const indexRoutes = new IndexRouter();
-indexRoutes.init();
-
-export default indexRoutes.router;
