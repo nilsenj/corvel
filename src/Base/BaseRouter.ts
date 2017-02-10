@@ -1,22 +1,24 @@
 import { Router, Request, Response, NextFunction } from "express";
+import * as express from "express";
+
 export abstract class BaseRouter {
+
     protected title: string;
     private scripts: string[];
-    /**
-     * Constructor
-     *
-     * @class BaseRoute
-     * @constructor
-     */
-    constructor() {
-        //initialize variables
+    protected router;
+    public app;
+    public orm;
+
+    constructor(router, app: express.Express) {
         this.title = "corvel";
         this.scripts = [];
+        this.router = router;
+        this.app = app;
     }
-
-    public static run(router: Router)
+    public run()
     {
         console.log("Please specify run method!" + self);
+
     };
 
     /**

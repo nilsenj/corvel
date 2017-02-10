@@ -1,5 +1,7 @@
 import * as http from "http";
 import * as debug from "debug";
+const _ = require('underscore');
+const boom = require('boom');
 
 import App from "./Concretes/App";
 

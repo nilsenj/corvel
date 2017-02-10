@@ -1,3 +1,3 @@
 export interface imainRouter {
-    run(express): any;
+    run(): any;
 }

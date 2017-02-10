@@ -3,26 +3,15 @@ import { BaseRouter } from "../Base/BaseRouter";
 
 export class IndexRouter extends BaseRouter {
 
-    /**
-     * Constructor
-     *
-     * @class IndexRoute
-     * @constructor
-     */
-    constructor() {
-        super();
-    }
-
-    public static run(router: Router) {
+    public run() {
         //log
-        console.log("[IndexRoute::create] Creating index route.");
-
+        console.log("[IndexRoute::run] Creating index route.");
         //add home page route
-        router.get("/home", (req: Request, res: Response, next: NextFunction) => {
-            new IndexRouter().index(req, res, next);
+        this.router.get("/home", (req: Request, res: Response, next: NextFunction) => {
+            console.log(this.app);
+           this.index(req, res, next);
         });
     }
-
     /**
      * @param req
      * @param res
