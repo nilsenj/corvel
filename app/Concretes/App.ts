@@ -78,8 +78,7 @@ export class App implements IApp {
     }
 
     private setUpControllers(): void {
-        let resolver = new ControllersResolver();
-        this.app.controllers = resolver.init(this.app, this.router);
+        this.app.controllers = ControllersResolver.init(this.app, this.router);
         this.app.controller = (name) => {
             // process.env.AUTOUPDATE = true;
             return this.app.controllers[name];
@@ -105,36 +104,7 @@ export class App implements IApp {
         this.mainRouter.run();
         // development error handler
         // will print stacktrace
-
-        // catch 404 and forward to error handler
-        this.app.use((req: Request, res: Response, next: Function) => {
-            let err: any = new Error('Not Found');
-            err.status = 404;
-            next(err);
-        });
-
-        // error handlers
-        // development error handler
-        // will print stacktrace
-        if (this.app.get('env') === 'development') {
-            this.app.use(function (err: any, req: Request, res: Response, next: Function) {
-                res.status(err.status || 500);
-                res.render('error', {
-                    message: err.message,
-                    error: err
-                });
-            });
-        }
-
-        // production error handler
-        // no stacktraces leaked to user
-        this.app.use(function (err: any, req: Request, res: Response, next: Function) {
-            res.status(err.status || 500);
-            res.render('error', {
-                message: err.message,
-                error: {}
-            });
-        });
+        this.setErrorHandlers();
     }
 
     /**

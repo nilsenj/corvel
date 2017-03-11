@@ -2,15 +2,14 @@ import {Router, Request, Response, NextFunction} from "express";
 import * as express from "express";
 let fs = require('fs');
 import * as path from "path";
-import helpers from "../../helpers/index";
 let controllerDir = path.resolve(__dirname, '../../../dist/Controllers/Web/');
 let controllerList = fs.readdirSync(controllerDir);
 
-declare let require:(moduleId:string) => any;
+declare let require: (moduleId: string) => any;
 export class ControllersResolver {
-    init(app, router) {
+    public static init(app, router) {
 
-        if(!app.controllers) {
+        if (!app.controllers) {
             app.controllers = {};
         }
         for (let m = 0; m < controllerList.length; m++) {

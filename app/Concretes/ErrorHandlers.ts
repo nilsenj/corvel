@@ -1,4 +1,8 @@
 import errorHandler = require('express-error-handler');
+import * as e from "express";
+
+import Request = e.Request;
+import Response = e.Response;
 
 export class ErrorHandlers {
 
@@ -16,11 +20,19 @@ export class ErrorHandlers {
             res.status(500);
             res.render('error', { error: err });
         }
+
+        // catch 404 and forward to error handler
+        this.app.use((req: Request, res: Response, next: Function) => {
+            let err: any = new Error('Not Found');
+            err.status = 404;
+            next(err);
+        });
+
+        // error handlers
         // development error handler
         // will print stacktrace
         if (this.app.get('env') === 'development') {
-            this.app.use(function (err, req, res, next) {
-
+            this.app.use(function (err: any, req: Request, res: Response, next: Function) {
                 res.status(err.status || 500);
                 res.render('error', {
                     message: err.message,
@@ -31,7 +43,7 @@ export class ErrorHandlers {
 
         // production error handler
         // no stacktraces leaked to user
-        this.app.use(function (err, req, res, next) {
+        this.app.use(function (err: any, req: Request, res: Response, next: Function) {
             res.status(err.status || 500);
             res.render('error', {
                 message: err.message,
