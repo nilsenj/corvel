@@ -10,15 +10,9 @@ export class ControllersResolver {
         if (!app.controllers) {
             app.controllers = {};
         }
-        for (let m = 0; m < controllerList.length; m++) {
-            let controllerFile = controllerList[m];
-            let controllerName = controllerFile.replace(/\.js$/i, '');
-            let controllers = require('auto-loader').load(controllerDir + '\\');
-            for (let controller in controllers) {
-                if (app.controllers[controller] !== controllers[controller]) {
-                    app.controllers[controller] = (new controllers[controllerName][controllerName](router, app));
-                }
-            }
+        let controllers = require('auto-loader').load(controllerDir + '\\');
+        for (let controller in controllers) {
+            app.controllers[controller] = (new controllers[controller][controller](router, app));
         }
         return app.controllers;
     }

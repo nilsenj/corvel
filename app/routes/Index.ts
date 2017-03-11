@@ -5,6 +5,7 @@ export class Index extends BaseRouter {
 
     public run() {
         let _this = this;
+        console.log(_this.app.controllers);
         //add home page route
         this.router.get("/home", function(req, res, next) {
             _this.controller.home(req, res, next);

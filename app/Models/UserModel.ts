@@ -2,7 +2,7 @@ import {Model} from "../Base/Model";
 
 export class UserModel extends Model {
     model() {
-        var UserModel = this.schema.define('user', {
+        let UserModel = this.schema.define('user', {
             active : { type : this.schema.Number },
             name : { type : this.schema.String },
             email : { type : this.schema.String },

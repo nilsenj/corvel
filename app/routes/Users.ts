@@ -15,7 +15,6 @@ export class Users extends BaseRouter {
         //log
         //add home page route
         this.router.get(prefix + "/hello", (req: Request, res: Response, next: NextFunction) => {
-            console.log( _this.controller);
             _this.controller.index(req, res, next);
         });
         /* params _this.controller.router level */

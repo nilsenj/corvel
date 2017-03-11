@@ -1,9 +1,5 @@
 import {Router, Request, Response, NextFunction} from "express";
 import * as express from "express";
-let fs = require('fs');
-import * as path from "path";
-let controllerDir = path.resolve(__dirname, '../../dist/Controllers/Web/');
-let controllerList = fs.readdirSync(controllerDir);
 
 export abstract class BaseRouter {
 

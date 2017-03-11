@@ -1,12 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
-import { BaseController } from '../../Base/BaseController';
-import helpers from '../../helpers/index';
+import * as e from "express";
+
+import {BaseController} from "../../Base/BaseController";
+import Request = e.Request;
+import Response = e.Response;
+import NextFunction = e.NextFunction;
 
 export class IndexController extends BaseController {
-    constructor(router, app) {
-        super(router, app);
-    }
-
     public home(req, res, next) {
         console.log("Home is here");
         //set custom title
