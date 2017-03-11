@@ -1,7 +1,5 @@
-let fs = require('fs');
 import * as path from "path";
 let controllerDir = path.resolve(__dirname, '../../../dist/Controllers/Web/');
-let controllerList = fs.readdirSync(controllerDir);
 
 declare let require: (moduleId: string) => any;
 export class ControllersResolver {
