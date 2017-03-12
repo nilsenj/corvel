@@ -8,14 +8,14 @@ const baseDirectory = __dirname;
 
 debug("corvel:server");
 const port = normalizePort(process.env.PORT || 3000); // setup port
-import App from "./Concretes/App"; // import App
+import Core from "./Concretes/Core"; // import App
 
-App.set("port", port);
-App.set("baseDirectory", baseDirectory);
+Core.set("port", port);
+Core.set("baseDirectory", baseDirectory);
 /**
  * set up express Server
  */
-const server = http.createServer(App);
+const server = http.createServer(Core);
 server.listen(port);
 
 server.on("error", onError);

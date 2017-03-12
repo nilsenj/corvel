@@ -2,15 +2,18 @@ import helpers from '../helpers/index';
 import * as express from "express";
 import Response = express.Response;
 import Request = express.Request;
+import {Inject} from "typedi";
+import {Application} from "../Concretes/Application";
 
-export abstract class BaseController {    
+export abstract class BaseController {
     protected router;
+    @Inject("core.app")
     protected app;
     public helpers;
     protected scripts: string[];
     protected title: string;
 
-    constructor(router, app) {
+    constructor(router, @Inject("core.app") app: Application) {
         this.router = router;
         this.app = app;
         this.helpers = helpers;

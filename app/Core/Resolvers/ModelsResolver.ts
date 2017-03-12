@@ -7,6 +7,8 @@ let fs = require('fs');
 let modelDir = path.resolve(__dirname, '../../Models');
 let modelList = fs.readdirSync(modelDir);
 import {dbConfig} from '../../configs/db';
+import {Application} from "../../Concretes/Application";
+import {Inject, Container, Service} from "typedi";
 let database = dbConfig[dbConfig.defaultDriver][process.env.NODE_ENV || 'dev'];
 let schema = new Schema(database.driver, database);
 
@@ -14,8 +16,10 @@ let schema = new Schema(database.driver, database);
  *  models loader
  **/
 declare let require: (moduleId: string) => any;
+@Service('ModelsResolver')
 export class ModelsResolver {
-
+    @Inject("core.app")
+    public app: Application;
     constructor() {
         this._schema = schema;
     }
@@ -23,17 +27,15 @@ export class ModelsResolver {
     private _schema;
     public relationsList: any;
 
-    init(app) {
-
+    init() {
         let models = {};
-
         let count = modelList.length;
         for (let m = 0; m < modelList.length; m++) {
             let modelFile = modelList[m];
             if (/\.js$/i.test(modelFile)) {
                 let modules = require('auto-loader').load(modelDir + '\\');
                 for (let module in modules) {
-                    models[module] = new modules[module][module](schema).model(); //
+                    models[module] = new modules[module][module](schema).setUp(); //
                 }
                 if (--count === 0) {
                     this.relations(null);
@@ -49,7 +51,7 @@ export class ModelsResolver {
                 });
             }
         }
-        return this.appModelBindings(app, models);
+        return this.appModelBindings(this.app, models);
     }
 
     public relations(models) {
@@ -79,4 +81,5 @@ export class ModelsResolver {
     }
 
 }
-
+let modelsResolver = Container.get<ModelsResolver>("ModelsResolver");
+export default modelsResolver;

@@ -5,7 +5,7 @@ import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as favicon from "express-favicon";
 import * as methodOverride from "method-override";
-import {IApp} from "../Interfaces/IApp";
+import {ICore} from "../Interfaces/ICore";
 import {viewEngineConfig} from "../configs/view-engine";
 import {MainRouter} from "../routes/router";
 import {iMainRouter} from "../Interfaces/iMainRouter";
@@ -17,15 +17,19 @@ import notifier = require('node-notifier');
 import Request = express.Request;
 import Response = express.Response;
 import useragent = require('express-useragent');
+import {Container, Service, Inject} from "typedi";
+import {Application} from "./Application";
 
 /**
  * Creates and configures an ExpressJS web server.
  */
-export class App implements IApp {
+@Service('core')
+export class Core implements ICore {
 
     /**
      * ref to Express instance and App addons
      */
+    @Inject("core.app")
     public app: any;
     protected router;
     public MainRouter: iMainRouter;
@@ -34,8 +38,8 @@ export class App implements IApp {
     /**
      * Run configuration methods on the app instance.
      */
-    constructor() {
-        this.app = express();
+        constructor(@Inject("core.app") app: Application) {
+        this.app = app;
         this.router = router;
         this.basicSetup();
         this.middleware();
@@ -92,7 +96,7 @@ export class App implements IApp {
      */
     private setUpModels(): void {
         let resolver = new ModelsResolver();
-        let newApp = resolver.init(this.app);
+        let newApp = resolver.init();
         this.setDb(newApp.orm);
     }
 
@@ -112,4 +116,5 @@ export class App implements IApp {
         this.app.orm = orm;
     }
 }
-export default new App().app;
+let core = Container.get<Core>("core");
+export default core.app;

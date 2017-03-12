@@ -1,13 +1,11 @@
 import {Model} from "../Base/Model";
 import helpers from "../helpers/index";
+import {Service, Container} from "typedi";
 
+@Service('model.User')
 export class User extends Model {
 
-    constructor(schema) {
-        super(schema);
-    }
-
-    model() {
+    public setUp() {
         let User = this.schema.define('user', {
             active : { type : this.schema.Number },
             name : { type : this.schema.String },

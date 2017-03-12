@@ -1,6 +1,8 @@
-import {Router, Request, Response, NextFunction} from "express";
+import {Request, Response, NextFunction} from "express";
 import {BaseRouter} from "../Base/BaseRouter";
+import {Service} from "typedi";
 
+@Service('route.users')
 export class Users extends BaseRouter {
 
     /**

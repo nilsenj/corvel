@@ -4,7 +4,10 @@ import {BaseController} from "../../Base/BaseController";
 import Request = e.Request;
 import Response = e.Response;
 import NextFunction = e.NextFunction;
+import {Service} from "typedi";
+import {User} from "../../Models/User";
 
+@Service('controller.UsersController')
 export class UsersController extends BaseController {
     /**
      * @param req
@@ -61,6 +64,7 @@ export class UsersController extends BaseController {
     public list(req: Request, res: Response, next: NextFunction) {
         const app = this.app;
         let User = app.model('User');
+        console.log(User);
         let _this = this;
 
         let query = req.query;

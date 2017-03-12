@@ -4,7 +4,9 @@ import {BaseController} from "../../Base/BaseController";
 import Request = e.Request;
 import Response = e.Response;
 import NextFunction = e.NextFunction;
+import {Service} from "typedi";
 
+@Service('controller.IndexController')
 export class IndexController extends BaseController {
     public home(req, res, next) {
         //set custom title
