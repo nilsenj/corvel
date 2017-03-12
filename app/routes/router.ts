@@ -1,6 +1,7 @@
 import {iMainRouter} from "../Interfaces/iMainRouter";
 import Uploader = require('express-uploader');
 import {routes} from "../routes";
+import {IApplication} from "../Interfaces/IApplication";
 
 export class MainRouter implements iMainRouter {
 
@@ -12,7 +13,7 @@ export class MainRouter implements iMainRouter {
      * @param app
      * @param router
      */
-    constructor(app, router) {
+    constructor(app: IApplication, router) {
         this.app = app;
         this.router = router;
         this.run();
