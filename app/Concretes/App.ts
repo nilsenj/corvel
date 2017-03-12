@@ -7,17 +7,17 @@ import * as favicon from "express-favicon";
 import * as methodOverride from "method-override";
 import {IApp} from "../Interfaces/IApp";
 import {viewEngineConfig} from "../configs/view-engine";
-import {mainRouter} from "../routes/router";
-import {imainRouter} from "../Interfaces/imainRouter";
+import {MainRouter} from "../routes/router";
+import {iMainRouter} from "../Interfaces/iMainRouter";
 import {ModelsResolver} from "../Core/Resolvers/ModelsResolver";
 import {ControllersResolver} from "../Core/Resolvers/ControllersResolver";
-import {ErrorHandlers} from "./ErrorHandlers";
 import {_, boom} from '../configs/constants';
 const router = express.Router();
-import errorhandler = require('errorhandler')
 import notifier = require('node-notifier');
 import Request = express.Request;
 import Response = express.Response;
+import useragent = require('express-useragent');
+
 /**
  * Creates and configures an ExpressJS web server.
  */
@@ -28,7 +28,7 @@ export class App implements IApp {
      */
     public app: any;
     protected router;
-    public mainRouter: imainRouter;
+    public MainRouter: iMainRouter;
     public controllers = [];
 
     /**
@@ -39,8 +39,8 @@ export class App implements IApp {
         this.router = router;
         this.basicSetup();
         this.middleware();
-        this.setUpControllers();
         this.setUpModels();
+        this.setUpControllers();
         this.routes();
         this.setViewEngine();
     }
@@ -61,6 +61,7 @@ export class App implements IApp {
             res.setHeader('X-Powered-By', 'Corvel Framework');
             next();
         });
+        this.app.use(useragent.express());
         this.app.use(bodyParser.json()); // parsing pages
         this.app.use(methodOverride()); // support for put and delete
         this.app.use(bodyParser.urlencoded({extended: false}));
@@ -74,7 +75,7 @@ export class App implements IApp {
         // view engine setup
         this.app.set('views', viewEngineConfig[viewEngineConfig.defaultView].viewPath);
         this.app.set('view engine', viewEngineConfig[viewEngineConfig.defaultView].viewEngine);
-
+        this.app.engine(viewEngineConfig[viewEngineConfig.defaultView].viewEngine, viewEngineConfig[viewEngineConfig.defaultView].viewResolve);
     }
 
     private setUpControllers(): void {
@@ -97,14 +98,10 @@ export class App implements IApp {
 
     // Configure API endpoints.
     private routes(): void {
-        this.mainRouter = new mainRouter(this.app, this.router);
         /* This is just to get up and running, and to make sure what we've got is
          * working so far. This function will change when we start to add more
          * API endpoints */
-        this.mainRouter.run();
-        // development error handler
-        // will print stacktrace
-        this.setErrorHandlers();
+        this.MainRouter = new MainRouter(this.app, this.router);
     }
 
     /**
@@ -113,18 +110,6 @@ export class App implements IApp {
      */
     private setDb(orm): void {
         this.app.orm = orm;
-        this.app.orm.model = (name) => {
-            // process.env.AUTOUPDATE = true;
-            return this.app.orm.schema.models[name];
-        };
-    }
-
-    /**
-     *
-     */
-    private setErrorHandlers(): void {
-        let errorHandler = new ErrorHandlers(this.app);
-        errorHandler.run();
     }
 }
 export default new App().app;

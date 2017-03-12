@@ -7,7 +7,6 @@ import NextFunction = e.NextFunction;
 
 export class IndexController extends BaseController {
     public home(req, res, next) {
-        console.log("Home is here");
         //set custom title
         let title = "Home";
         //set options

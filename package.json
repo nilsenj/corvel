@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node dist/index.js",
-    "test": "mocha -r should -R spec"
+    "test": "mocha -r should -R spec",
+    "corv orm": "node node_modules/caminte-cli/bin/caminte"
   },
   "dependencies": {
     "@types/body-parser": "0.0.33",
@@ -33,13 +34,17 @@
     "express": "^4.14.1",
     "express-error-handler": "^1.1.0",
     "express-favicon": "^2.0.0",
+    "express-uploader": "^0.1.3",
+    "express-useragent": "^1.0.7",
     "fs": "0.0.1-security",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-task": "^2.1.0",
     "gulp-typescript": "^3.1.4",
     "gulp-util": "^3.0.8",
+    "install": "^0.8.7",
     "method-override": "^2.3.7",
+    "mongodb": "^2.2.24",
     "morgan": "~1.7.0",
     "multer": "^1.3.0",
     "mysql": ">= 2.0.0",
@@ -48,13 +53,18 @@
     "node-sass": "^4.5.0",
     "node-sass-middleware": "0.9.8",
     "nodemon": "^1.11.0",
+    "npm": "^4.4.1",
+    "pg": "^6.1.4",
     "postgresql": "0.0.1",
-    "redis": "^2.6.5",
-    "reflect-metadata": "^0.1.9",
+    "pug": "^2.0.0-beta11",
+    "redis": "^2.7.0",
+    "reflect-metadata": "^0.1.10",
     "serve-favicon": "~2.3.2",
     "sqlite3": "^3.1.8",
     "ts-loader": "^2.0.0",
+    "typedi": "^0.4.3",
     "typescript": "^2.1.6",
+    "typings": "^2.1.0",
     "underscore": "^1.8.3",
     "webpack": "^2.2.1",
     "webpack-stream": "^3.2.0"
@@ -97,6 +107,6 @@
   "license": "ISC",
   "description": "",
   "caminte": {
-    "adapter": "mysql"
+    "adapter": "mongodb"
   }
 }

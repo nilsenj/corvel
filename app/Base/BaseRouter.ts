@@ -11,6 +11,7 @@ export abstract class BaseRouter {
         this.router = router;
         this.app = app;
         this.controller = app.controller(this.getClassName()+"Controller");
+        this.routes();
     }
 
     public getClassName() {
@@ -18,7 +19,7 @@ export abstract class BaseRouter {
         // OR return (this as any).constructor.name;
     }
 
-    public run() {
+    public routes() {
         console.log("Please specify run method!" + self);
 
     };

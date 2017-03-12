@@ -6,41 +6,36 @@ let Schema = caminte.Schema;
 let fs = require('fs');
 let modelDir = path.resolve(__dirname, '../../Models');
 let modelList = fs.readdirSync(modelDir);
-import { dbConfig } from '../../configs/db';
+import {dbConfig} from '../../configs/db';
 let database = dbConfig[dbConfig.defaultDriver][process.env.NODE_ENV || 'dev'];
 let schema = new Schema(database.driver, database);
 
 /**
  *  models loader
- *
- *  Created by create caminte-cli script
- *  App based on CaminteJS
- *  CaminteJS homepage http://www.camintejs.com
  **/
-declare let require:(moduleId:string) => any;
+declare let require: (moduleId: string) => any;
 export class ModelsResolver {
 
     constructor() {
         this._schema = schema;
     }
+
     private _schema;
     public relationsList: any;
+
     init(app) {
 
-        if(!app.models) {
-            app.models = {};
-        }
+        let models = {};
 
         let count = modelList.length;
-        for(let m = 0; m < modelList.length; m++) {
+        for (let m = 0; m < modelList.length; m++) {
             let modelFile = modelList[m];
-            if (/Model\.js$/i.test(modelFile)) {
-                let modelName = modelFile.replace(/\.js$/i, '');
+            if (/\.js$/i.test(modelFile)) {
                 let modules = require('auto-loader').load(modelDir + '\\');
                 for (let module in modules) {
-                    app.models[module] = new modules[modelName][modelName](schema).model(); //
+                    models[module] = new modules[module][module](schema).model(); //
                 }
-                if(--count === 0) {
+                if (--count === 0) {
                     this.relations(null);
                 }
             }
@@ -49,27 +44,37 @@ export class ModelsResolver {
             if (process.env.AUTOUPDATE) {
                 this._schema.autoupdate(function (err) {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                     }
                 });
             }
         }
-        app.orm = caminte;
-        app.orm.schema = this._schema;
-        app.orm.schema.models = app.models;
-        return app;
+        return this.appModelBindings(app, models);
     }
-    relations(models) {
+
+    public relations(models) {
         let relations = new Relations();
         relations.load(models);
         this.setRelations(relations.getRelations());
     }
 
-    getRelations() {
+    private appModelBindings(app, models) {
+        app.orm = caminte;
+        app.orm.schema = this._schema;
+        app.orm.schema.models = models;
+        app.model = (name) => {
+            return app.orm.schema.models[name];
+        };
+        app.orm.model = (name) => {
+            return app.orm.schema.models[name];
+        };
+        return app;
+    }
+    private getRelations() {
         return this.relationsList;
     }
 
-    setRelations(relation) {
+    private setRelations(relation) {
         return this.relationsList = relation;
     }
 

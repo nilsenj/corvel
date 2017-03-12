@@ -5,16 +5,15 @@ import "es6-shim";
 import "reflect-metadata";
 import "./configs/constants";
 const baseDirectory = __dirname;
-import { controllersConfig } from './configs/controllers';
-import App from "./Concretes/App"; // import App
-import { appConfig } from './configs/app';
-debug("itway.blog:server");
+
+debug("corvel:server");
 const port = normalizePort(process.env.PORT || 3000); // setup port
+import App from "./Concretes/App"; // import App
+
 App.set("port", port);
 App.set("baseDirectory", baseDirectory);
-
 /**
- * set up express Server and controllers
+ * set up express Server
  */
 const server = http.createServer(App);
 server.listen(port);

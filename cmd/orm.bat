@@ -1,0 +1,1 @@
+node node_modules/caminte-cli/bin/caminte

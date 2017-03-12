@@ -1,3 +1,3 @@
-export interface imainRouter {
+export interface iMainRouter {
     run(): any;
 }

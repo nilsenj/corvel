@@ -61,6 +61,7 @@ export class UsersController extends BaseController {
     public list(req: Request, res: Response, next: NextFunction) {
         const app = this.app;
         let User = app.model('User');
+        let _this = this;
 
         let query = req.query;
         let skip = query.skip ? parseInt(query.skip) - 1 : 0;
@@ -83,7 +84,20 @@ export class UsersController extends BaseController {
                 return res.json(app.boom.badRequest(err.message || err).output.payload);
             }
             res.status(200);
-            res.json(users);
+            //set custom title
+            let title = "Users";
+            //set options
+            let options: Object = {
+                "message": "users page",
+                "users": users
+            };
+            let isAjaxRequest = req.xhr;
+            //render template
+            if(isAjaxRequest) {
+                res.json(users);
+            } else {
+                _this.render(req, res, "users/index", options);
+            }
         });
     }
 
@@ -178,6 +192,7 @@ export class UsersController extends BaseController {
         const app = this.app;
         let query = req.body;
         let User = app.model('User');
+
         User.findById(req.params.user_id, function (err, user) {
             if (err) {
                 res.status(400);

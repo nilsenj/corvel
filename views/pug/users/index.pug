@@ -1,0 +1,12 @@
+extends ../layout.pug
+
+block content
+    .sidebar
+        block sidebar
+            p
+    .primary
+        block primary
+            each user in users
+                li= user.name
+            else
+                li There are no users

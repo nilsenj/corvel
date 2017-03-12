@@ -10,6 +10,7 @@ export class ErrorHandlers {
 
     constructor(app) {
         this.app = app;
+        this.run();
     }
 
     run() {

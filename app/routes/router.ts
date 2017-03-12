@@ -1,8 +1,9 @@
-import {imainRouter} from "../Interfaces/imainRouter";
-import {Users} from "./Users";
-import {Index} from "./Index";
-import {ErrorHandlers} from "../Concretes/ErrorHandlers";
-export class mainRouter implements imainRouter {
+import {iMainRouter} from "../Interfaces/iMainRouter";
+import Uploader = require('express-uploader');
+import {routes} from "../routes";
+
+export class MainRouter implements iMainRouter {
+
     protected router;
     protected app;
 
@@ -14,28 +15,39 @@ export class mainRouter implements imainRouter {
     constructor(app, router) {
         this.app = app;
         this.router = router;
+        this.run();
     }
 
     /**
      * run routes functionality
      */
-    run() {
+    public run(): void {
+        this.predefined();
+        for (let route in routes) {
+            new (routes[route])(this.router, this.app);
+        }
+    }
 
+    /**
+     * get the predefined route configs
+     */
+    private predefined(): void {
         this.app.use("/", this.router);
-        // placeholder route handler
-        this.router.get("/corvel", (req, res, next) => {
-            res.json({
-                message: "Welcome to Corvel!"
+        this.app.all('/files/upload', function (req, res, next) {
+            let uploader = new Uploader({
+                debug: true,
+                validate: true,
+                thumbnails: true,
+                thumbToSubDir: true,
+                tmpDir: __dirname + '/tmp',
+                publicDir: __dirname + '/../../public',
+                uploadDir: __dirname + '/../../public/files',
+                uploadUrl: '/../../files/',
+                thumbSizes: [140, [100, 100]]
+            });
+            uploader.uploadFile(req, function (data) {
+                res.send(JSON.stringify(data), {'Content-Type': 'text/plain'}, 200);
             });
         });
-        /**
-         * please specify routes here
-         */
-        let index = new Index(this.router, this.app);
-        index.run();
-        let users = new Users(this.router, this.app);
-        users.run();
-        let errorHandler = new ErrorHandlers(this.app);
-        errorHandler.run();
     }
 }

@@ -18,7 +18,7 @@ export const dbConfig = {
      * following adapters available
      * mysql, sqlite3, riak, postgres, couchdb, mongodb, redis, neo4j, firebird, rethinkdb, tingodb
      */
-    defaultDriver: "mysql",
+    defaultDriver: "mongodb",
 
     mysql: {
         production: {
@@ -47,6 +47,39 @@ export const dbConfig = {
             password: '',
             database: 'corvel',
             autoReconnect: true
+        },
+        dev: this.development
+    },
+    mongodb: {
+        production: {
+            driver: 'mongodb',
+            host: 'localhost',
+            port: '27017',
+            username: '',
+            password: '',
+            database: 'corvel',
+            autoReconnect: true,
+            pool       : true
+        },
+        development: {
+            driver: 'mongodb',
+            host: 'localhost',
+            port: '27017',
+            username: '',
+            password: '',
+            database: 'corvel',
+            autoReconnect: true,
+            pool       : true
+        },
+        test: {
+            driver: 'mongodb',
+            host: 'localhost',
+            port: '27017',
+            username: '',
+            password: '',
+            database: 'corvel',
+            autoReconnect: true,
+            pool       : true
         },
         dev: this.development
     }

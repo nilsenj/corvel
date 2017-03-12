@@ -1,8 +1,14 @@
 import {Model} from "../Base/Model";
+import helpers from "../helpers/index";
 
-export class UserModel extends Model {
+export class User extends Model {
+
+    constructor(schema) {
+        super(schema);
+    }
+
     model() {
-        let UserModel = this.schema.define('user', {
+        let User = this.schema.define('user', {
             active : { type : this.schema.Number },
             name : { type : this.schema.String },
             email : { type : this.schema.String },
@@ -15,7 +21,7 @@ export class UserModel extends Model {
 
         // additional methods and validation here
 
-        return UserModel;
+        return User;
     }
 
     // additional methods and validation here

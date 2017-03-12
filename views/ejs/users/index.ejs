@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='public/stylesheets/style.css' />
+    <link rel="icon" href="public/corvel.png" type="image/x-icon"/>
+</head>
+<body>
+<h1><%= title %></h1>
+<p>Welcome to <%= message %></p>
+<ul>
+    <% for(var i=0; i<users.length; i++) {%>
+    <li><%= user[i] %></li>
+    <% } %>
+</ul>
+</body>
+</html>

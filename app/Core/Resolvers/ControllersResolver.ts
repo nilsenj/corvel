@@ -4,7 +4,6 @@ let controllerDir = path.resolve(__dirname, '../../../dist/Controllers/Web/');
 declare let require: (moduleId: string) => any;
 export class ControllersResolver {
     public static init(app, router) {
-
         if (!app.controllers) {
             app.controllers = {};
         }

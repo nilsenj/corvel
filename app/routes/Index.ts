@@ -1,11 +1,8 @@
-import { Router, Request, Response, NextFunction } from "express";
 import { BaseRouter } from "../Base/BaseRouter";
 
 export class Index extends BaseRouter {
-
-    public run() {
+    public routes() {
         let _this = this;
-        console.log(_this.app.controllers);
         //add home page route
         this.router.get("/home", function(req, res, next) {
             _this.controller.home(req, res, next);

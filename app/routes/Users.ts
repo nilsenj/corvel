@@ -7,8 +7,7 @@ export class Users extends BaseRouter {
      * specify the list of
      * endpoints here
      */
-    public run() {
-        console.log("[Users::run] Creating index route.");
+    public routes() {
         const prefix = "/users";
         let _this = this;
 
