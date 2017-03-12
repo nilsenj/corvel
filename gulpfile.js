@@ -36,7 +36,7 @@ gulp.task('scriptTask', () => {
 });
 
 // our browser-sync config + nodemon chain
-gulp.task('browser-sync', ['nodemon'], () => {
+gulp.task('browser-sync', () => {
     return bs.init(null, {
         proxy: "http://localhost:3000",
         port: 4000,
@@ -51,14 +51,18 @@ gulp.task('reload', () => {
     }, 1000);
 });
 
-// our gulp-nodemon task
-gulp.task('nodemon', (cb) => {
-    let started = false;
+// the real stuff
+gulp.task('default', ['clean', 'browser-sync', 'scriptTask'], () => {
+    let watcher = gulp.watch(['app/**/*.ts', 'app/*.ts', 'app/'], ['clean', 'scriptTask']);
+    watcher.on('change', () => {
+        bs.reload();
+    });
+    gulp.watch('./dist/**/*.js').on('change', () => bs.reload());
     const stream = nodemon({
         script: 'dist',
         ext: 'js',
         ignore: ['public/**/*.*'],
-        tasks: [],
+        tasks: ['browser-sync'],
         env: {
             'NODE_ENV': 'development',
             'DEBUG': 'corvel:*'
@@ -73,9 +77,9 @@ gulp.task('nodemon', (cb) => {
         bs.reload();
 
     }).on('crash', () => {
-            console.log('nodemon.crash');
-            stream.emit('restart', 10);  // restart the server in 10 seconds
-        })
+        console.log('nodemon.crash');
+        stream.emit('restart', 10);  // restart the server in 10 seconds
+    })
         .on('restart', () => {
             console.log('nodemon.restart');
         })
@@ -83,14 +87,4 @@ gulp.task('nodemon', (cb) => {
             // handle ctrl+c without a big weep
             process.exit();
         });
-    return stream;
-});
-
-// the real stuff
-gulp.task('default', ['clean', 'browser-sync', 'scriptTask'], () => {
-    let watcher = gulp.watch(['app/**/*.ts', 'app/*.ts', 'app/'], ['clean', 'scriptTask']);
-    watcher.on('change', () => {
-        bs.reload();
-    });
-    gulp.watch('./dist/**/*.js').on('change', () => bs.reload());
 });

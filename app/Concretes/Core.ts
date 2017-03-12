@@ -107,7 +107,6 @@ export class Core implements ICore {
          * API endpoints */
         this.MainRouter = new MainRouter(this.app, this.router);
     }
-
     /**
      *
      * @param orm
