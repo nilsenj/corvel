@@ -3,22 +3,23 @@ import * as express from "express";
 import * as logger from "morgan";
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
-import * as favicon from "express-favicon";
+const favicon = require("express-favicon");
 import * as methodOverride from "method-override";
 import {ICore} from "../Interfaces/ICore";
 import {viewEngineConfig} from "../configs/view-engine";
-import {MainRouter} from "../routes/router";
+import {MainRouter} from "../routes/MainRouter";
 import {iMainRouter} from "../Interfaces/iMainRouter";
 import {ModelsResolver} from "../Core/Resolvers/ModelsResolver";
 import {ControllersResolver} from "../Core/Resolvers/ControllersResolver";
 import {_, boom} from '../configs/constants';
 const router = express.Router();
-import notifier = require('node-notifier');
+const notifier = require('node-notifier');
 import Request = express.Request;
 import Response = express.Response;
-import useragent = require('express-useragent');
+const useragent = require('express-useragent');
 import {Container, Service, Inject} from "typedi";
 import {Application} from "./Application";
+import morgan = require("morgan");
 
 /**
  * Creates and configures an ExpressJS web server.
@@ -56,7 +57,6 @@ export class Core implements ICore {
         this.app._ = _;
         this.app.boom = boom;
     }
-
     // Configure app middleware.
     private middleware(): void {
         this.app.use(logger("dev"));
@@ -66,6 +66,7 @@ export class Core implements ICore {
             next();
         });
         this.app.use(useragent.express());
+        this.app.use(morgan('dev')); // parsing pages
         this.app.use(bodyParser.json()); // parsing pages
         this.app.use(methodOverride()); // support for put and delete
         this.app.use(bodyParser.urlencoded({extended: false}));

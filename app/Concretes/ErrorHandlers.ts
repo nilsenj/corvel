@@ -1,4 +1,3 @@
-import errorHandler = require('express-error-handler');
 import * as e from "express";
 
 import Request = e.Request;

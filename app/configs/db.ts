@@ -18,7 +18,7 @@ export const dbConfig = {
      * following adapters available
      * mysql, sqlite3, riak, postgres, couchdb, mongodb, redis, neo4j, firebird, rethinkdb, tingodb
      */
-    defaultDriver: "mongodb",
+    defaultDriver: "mysql",
 
     mysql: {
         production: {

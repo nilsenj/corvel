@@ -1,8 +1,11 @@
 import {iMainRouter} from "../Interfaces/iMainRouter";
-import Uploader = require('express-uploader');
+const Uploader = require('express-uploader');
 import {routes} from "../routes";
 import {IApplication} from "../Interfaces/IApplication";
+import "reflect-metadata";
+import {Container, Service} from "typedi";
 
+@Service('MainRouter')
 export class MainRouter implements iMainRouter {
 
     protected router;

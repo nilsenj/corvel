@@ -9,6 +9,7 @@ let modelList = fs.readdirSync(modelDir);
 import {dbConfig} from '../../configs/db';
 import {Application} from "../../Concretes/Application";
 import {Inject, Container, Service} from "typedi";
+import {Repository} from "../../Concretes/Repository";
 let database = dbConfig[dbConfig.defaultDriver][process.env.NODE_ENV || 'dev'];
 let schema = new Schema(database.driver, database);
 
@@ -35,7 +36,10 @@ export class ModelsResolver {
             if (/\.js$/i.test(modelFile)) {
                 let modules = require('auto-loader').load(modelDir + '\\');
                 for (let module in modules) {
-                    models[module] = new modules[module][module](schema).setUp(); //
+                    let model = new modules[module][module](schema, new modules[module][module](schema)).build();
+                    model.repository = new Repository(model);
+                    models[module] = model; //
+                    Container.set(module, model);
                 }
                 if (--count === 0) {
                     this.relations(null);
