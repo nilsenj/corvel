@@ -9,9 +9,16 @@ const baseDirectory = __dirname;
 debug("corvel:server");
 const port = normalizePort(process.env.PORT || 3000); // setup port
 import Core from "./Concretes/Core"; // import App
+import {createConnection, useContainer} from "typeorm";
+import {Container} from "typedi";
 
+useContainer(Container);
+createConnection({
+    /// ....
+});
 Core.set("port", port);
 Core.set("baseDirectory", baseDirectory);
+
 /**
  * set up express Server
  */
