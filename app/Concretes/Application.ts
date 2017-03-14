@@ -1,8 +1,8 @@
 import {Container, Service, Inject} from "typedi";
 import {IApplication} from "../Interfaces/IApplication";
-import * as express from "express";
+import * as express from 'express';
 
-@Service('core.app')
+@Service("core.app")
 export class Application extends express implements IApplication {
 
     constructor() {

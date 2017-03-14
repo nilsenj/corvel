@@ -19,12 +19,13 @@ import Response = express.Response;
 const useragent = require('express-useragent');
 import {Container, Service, Inject} from "typedi";
 import {Application} from "./Application";
+import { TestInterceptor } from '../Interceptors/test';
 import morgan = require("morgan");
 
 /**
  * Creates and configures an ExpressJS web server.
  */
-@Service('core')
+@Service('Core')
 export class Core implements ICore {
 
     /**
@@ -44,6 +45,7 @@ export class Core implements ICore {
         this.router = router;
         this.basicSetup();
         this.middleware();
+        this.interceptors();
         this.setUpModels();
         this.setUpControllers();
         this.routes();
@@ -76,11 +78,16 @@ export class Core implements ICore {
         this.app.use("/files", express.static(path.join(__dirname + "/../..", "/files"))); // giving files
     }
 
+    private interceptors(): void {
+        this.app.use(TestInterceptor);
+    }
+
     private setViewEngine(): void {
         // view engine setup
         this.app.set('views', viewEngineConfig[viewEngineConfig.defaultView].viewPath);
         this.app.set('view engine', viewEngineConfig[viewEngineConfig.defaultView].viewEngine);
-        this.app.engine(viewEngineConfig[viewEngineConfig.defaultView].viewEngine, viewEngineConfig[viewEngineConfig.defaultView].viewResolve);
+        this.app.engine(viewEngineConfig[viewEngineConfig.defaultView].viewEngine,
+        viewEngineConfig[viewEngineConfig.defaultView].viewResolve);
     }
 
     private setUpControllers(): void {
@@ -116,5 +123,5 @@ export class Core implements ICore {
         this.app.orm = orm;
     }
 }
-let core = Container.get<Core>("core");
+let core = Container.get<Core>("Core");
 export default core.app;

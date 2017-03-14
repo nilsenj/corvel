@@ -1,4 +1,4 @@
-import helpers from '../helpers/index';
+import Helpers from '../helpers/index';
 import * as express from "express";
 import Response = express.Response;
 import Request = express.Request;
@@ -16,7 +16,7 @@ export abstract class BaseController {
     constructor(router, @Inject("core.app") app: Application) {
         this.router = router;
         this.app = app;
-        this.helpers = helpers;
+        this.helpers = Helpers;
         this.scripts = [];
         this.title = "corvel";
 

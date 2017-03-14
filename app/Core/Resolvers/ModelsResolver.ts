@@ -33,8 +33,8 @@ export class ModelsResolver {
         let count = modelList.length;
         for (let m = 0; m < modelList.length; m++) {
             let modelFile = modelList[m];
+            let modules = require('auto-loader').load(modelDir + '\\');
             if (/\.js$/i.test(modelFile)) {
-                let modules = require('auto-loader').load(modelDir + '\\');
                 for (let module in modules) {
                     let model = new modules[module][module](schema, new modules[module][module](schema)).build();
                     model.repository = new Repository(model);
